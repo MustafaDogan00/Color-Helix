@@ -4,29 +4,25 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+    public static PlayerScript Instance;
 
     private static Color _currentColor;
 
     private MeshRenderer _meshRenderer;
 
-    private Vector3 _position;
-
-
     private static float z;
 
     private bool _move;
-    private bool _canMove;
 
     private Rigidbody _rb;
     
-   
-
     private float _height=.58f, _speed=3f;
 
     private void Awake()
     {
+        Instance = this;
         _meshRenderer = GetComponent<MeshRenderer>();
-        _position = transform.position; 
+       
     }
 
     void Update()
@@ -34,14 +30,11 @@ public class PlayerScript : MonoBehaviour
 
 
         if (Touch.IsPressing())
-            _move = true;
+        { _move = true; }
         if (_move)
-            PlayerScript.z += _speed * .025f;
-        if (!_canMove)
-        {
-            transform.position = new Vector3(0, _height, PlayerScript.z);
+        PlayerScript.z += _speed*.025f;
 
-        }
+            transform.position = new Vector3(0, _height, PlayerScript.z);
 
         UptadeColor();
     }
@@ -85,10 +78,18 @@ public class PlayerScript : MonoBehaviour
         if (target.gameObject.tag == "Fail")
         {
             Debug.Log("Fail");
-           GameController.Instance.GenerateLevels();
+            StartCoroutine(GameOver());
 
         }
     }
 
+    IEnumerator GameOver()
+    {
+        GameController.Instance.GenerateLevels();
+        _move=false;
+        PlayerScript.z = 0;
+        yield break;
+
+    }
 
 }

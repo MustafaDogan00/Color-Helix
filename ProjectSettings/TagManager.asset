@@ -9,6 +9,7 @@ TagManager:
   - Hit
   - FinishLine
   - Fail
+  - ColorBump
   layers:
   - Default
   - TransparentFX
