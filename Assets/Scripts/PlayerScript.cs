@@ -18,21 +18,24 @@ public class PlayerScript : MonoBehaviour
     
     private float _height=.58f, _speed=3f;
 
+    private Vector3 _position;
+
     private void Awake()
     {
         Instance = this;
         _meshRenderer = GetComponent<MeshRenderer>();
+        _position = transform.position;
        
     }
 
     void Update()
     {
 
-
+        
         if (Touch.IsPressing())
         { _move = true; }
         if (_move)
-        PlayerScript.z += _speed*.025f;
+        { PlayerScript.z += _speed * .025f; }
 
             transform.position = new Vector3(0, _height, PlayerScript.z);
 
@@ -88,6 +91,7 @@ public class PlayerScript : MonoBehaviour
         GameController.Instance.GenerateLevels();
         _move=false;
         PlayerScript.z = 0;
+        transform.position = _position;
         yield break;
 
     }
