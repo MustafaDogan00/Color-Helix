@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        GenerateLevels();
+        //GenerateLevels();
     }
 
     void GenerateColors()
@@ -47,17 +47,15 @@ public class GameController : MonoBehaviour
 
     public void GenerateLevels()
     {
+        _wallSpawnNumber = 12;
         DeleteWalls();
         _isColor = false;
-        SpawnWalls();
-       
+       _z = 5;
+        SpawnWalls();          
     }
     void DeleteWalls()
     {
-        _wallSpawnNumber = 12;
         _walls2 = GameObject.FindGameObjectsWithTag("Fail");
-     
-
         if (_walls2.Length>=1)
         {
             for (int i = 0; i < _walls2.Length; i++)
@@ -67,8 +65,6 @@ public class GameController : MonoBehaviour
 
             Destroy(GameObject.FindGameObjectWithTag("ColorBump"));
         }
-
-
     }
     void SpawnWalls()
     {
@@ -81,18 +77,14 @@ public class GameController : MonoBehaviour
                 wall = Instantiate(colorBump, transform.position, Quaternion.identity);
                 _isColor = true;
             }
-           /* else if(i<=9 && !_isColor)
-            {
-                wall = Instantiate(colorBump, transform.position, Quaternion.identity);
-                _isColor = true;
-            }*/          
+          
             else 
             {
                 wall = Instantiate(myWall, transform.position, Quaternion.identity);
             }
          
             wall.transform.SetParent(GameObject.FindWithTag("Helix").transform);
-            wall.transform.position = new Vector3(0,0,_z);
+            wall.transform.localPosition = new Vector3(0,0,_z);
             _randomRotation = Random.Range(0, 360);
             wall.transform.localRotation = Quaternion.Euler(new Vector3(0,0,_randomRotation));
             _z += 5;
