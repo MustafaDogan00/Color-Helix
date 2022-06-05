@@ -10,6 +10,10 @@ public class Wall : MonoBehaviour
 
     private float _rotatitonZ;
     private float _rotatitonZMax=180;
+
+    private bool _smallWall;
+
+
   
     void Start()
     {
@@ -29,6 +33,19 @@ public class Wall : MonoBehaviour
         _wall1.transform.SetParent(transform);
         _wall2.transform.SetParent(transform);
 
+        if (Random.value <=.4f )
+        {
+            _smallWall = true;
+        }
+
+        if (_smallWall)
+        {
+            _rotatitonZMax = 90;
+        }
+        else
+        {
+            _rotatitonZMax = 180;
+        }
        
 
         for (int i = 0; i < 100; i++)
@@ -54,9 +71,17 @@ public class Wall : MonoBehaviour
         _wall1.transform.localRotation = Quaternion.Euler(new Vector3(0,0,0));
         _wall2.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
 
-
-        GameObject wallFragmentsChield=_wall1.transform.GetChild(25).gameObject;
-        AddStar(wallFragmentsChield);
+        if (_smallWall)
+        {
+            GameObject wallFragmentsChield = _wall1.transform.GetChild(14).gameObject;
+            AddStar(wallFragmentsChield);
+        }
+        else
+        {
+            GameObject wallFragmentsChield = _wall1.transform.GetChild(25).gameObject;
+            AddStar(wallFragmentsChield);
+        }
+       
     }
 
     void AddStar(GameObject wallFragmentsChield)

@@ -28,6 +28,6 @@ public class ColorBump : MonoBehaviour
    
     public Color ColorBumpGetColor()
     {
-        return _color;
+        return this._color;
     }
 }

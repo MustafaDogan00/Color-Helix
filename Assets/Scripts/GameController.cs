@@ -72,7 +72,7 @@ public class GameController : MonoBehaviour
         {
             GameObject wall;
 
-            if (Random.value<=0.1f && !_isColor )
+            if (Random.value<=0.5f && !_isColor )
             {
                 wall = Instantiate(colorBump, transform.position, Quaternion.identity);
                 _isColor = true;

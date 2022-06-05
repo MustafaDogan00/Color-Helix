@@ -12,11 +12,12 @@ public class PlayerScript : MonoBehaviour
 
     private static float z;
 
-    private bool _move;
+    private bool _move, _colorChange;
 
     private Rigidbody _rb;
     
     private float _height=.58f, _speed=3f;
+    private float  _lerpValue;
 
     private Vector3 _position;
 
@@ -50,8 +51,18 @@ public class PlayerScript : MonoBehaviour
 
     void UptadeColor() 
     {
-      _meshRenderer.sharedMaterial.color =_currentColor;
-      
+        _meshRenderer.sharedMaterial.color = _currentColor;
+        if (_colorChange)
+        {
+            _currentColor = Color.Lerp(_meshRenderer.material.color, ColorBump.Instance.ColorBumpGetColor(), _lerpValue);
+            _lerpValue = Time.deltaTime * 8;
+        }
+
+        if (_lerpValue >= 1)
+        {
+            _colorChange = false;
+        }
+
     }
     public static Color SetColor(Color color)
     {
@@ -69,18 +80,20 @@ public class PlayerScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision target)
     {
-        if (target.gameObject.tag=="FinishLine")
+        if (target.gameObject.tag == "FinishLine")
         {
-            Debug.Log("FinishLine");
+            StartCoroutine(NewLevel());
+            StartCoroutine(GameOver());
         }
         if (target.gameObject.tag == "Hit")
         {
-            Debug.Log("Hit");
+            
+           Destroy(target.transform.parent.gameObject);
 
         }
         if (target.gameObject.tag == "Fail")
         {
-            Debug.Log("Fail");
+           
             StartCoroutine(GameOver());
 
         }
@@ -88,7 +101,9 @@ public class PlayerScript : MonoBehaviour
 
         if (target.gameObject.tag=="ColorBump")
         {
-            SetColor(ColorBump.Instance.ColorBumpGetColor());
+           _colorChange=true;
+            _lerpValue = 0;
+          
         }
     }
 
@@ -102,6 +117,16 @@ public class PlayerScript : MonoBehaviour
        PlayerScript.z= 0;
         //transform.position = _position;
         yield break;
+    }
+
+
+    IEnumerator NewLevel()
+    {
+        Camera.main.GetComponent<CameraMovement>().enabled = false;
+        yield return new WaitForSeconds(1.5f);
+        _move=false;
+        Camera.main.GetComponent<CameraMovement>().enabled = true;
+
 
     }
 
