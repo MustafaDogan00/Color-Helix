@@ -84,7 +84,16 @@ public class PlayerScript : MonoBehaviour
             StartCoroutine(GameOver());
 
         }
+
+
+        if (target.gameObject.tag=="ColorBump")
+        {
+            SetColor(ColorBump.Instance.ColorBumpGetColor());
+        }
     }
+
+
+
 
     IEnumerator GameOver()
     {

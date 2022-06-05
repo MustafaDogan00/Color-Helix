@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ColorBump : MonoBehaviour
 {
+    public static ColorBump Instance;
     private MeshRenderer _meshRenderer;
    
     private Color _color;
@@ -11,6 +12,7 @@ public class ColorBump : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         _meshRenderer = GetComponent<MeshRenderer>();
         
     }
