@@ -28,12 +28,13 @@ public class GameController : MonoBehaviour
         Instance = this;
         GenerateColors();
         SpawnWalls();
-       
-    }
+       PlayerPrefs.GetInt("level",1);
 
+    }
+     
     private void Start()
     {
-        //GenerateLevels();
+       // GenerateLevels();
     }
 
     void GenerateColors()
@@ -47,7 +48,15 @@ public class GameController : MonoBehaviour
 
     public void GenerateLevels()
     {
-        _wallSpawnNumber = 12;
+        if (PlayerPrefs.GetInt("Level")<=1 && (PlayerPrefs.GetInt("Level")<=3))
+        {
+            _wallSpawnNumber = 12;
+        }
+
+        if (PlayerPrefs.GetInt("Level") <= 4 && (PlayerPrefs.GetInt("Level") <= 10))
+        {
+            _wallSpawnNumber = 14;
+        }
         DeleteWalls();
         _isColor = false;
        _z = 5;
@@ -72,7 +81,7 @@ public class GameController : MonoBehaviour
         {
             GameObject wall;
 
-            if (Random.value<=0.5f && !_isColor )
+            if (Random.value<=0.5f && !_isColor && (PlayerPrefs.GetInt("Level") >= 3))
             {
                 wall = Instantiate(colorBump, transform.position, Quaternion.identity);
                 _isColor = true;

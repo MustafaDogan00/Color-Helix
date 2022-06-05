@@ -13,8 +13,6 @@ public class PlayerScript : MonoBehaviour
     private static float z;
 
     private bool _move, _colorChange;
-
-    private Rigidbody _rb;
     
     private float _height=.58f, _speed=3f;
     private float  _lerpValue;
@@ -27,8 +25,13 @@ public class PlayerScript : MonoBehaviour
         _meshRenderer = GetComponent<MeshRenderer>();
         _position = transform.position;
        
-    }
 
+    }
+    private void Start()
+    {
+        _move = false;
+        SetColor(GameController.Instance.hitColor);
+    }
     void Update()
     {
 
@@ -124,8 +127,10 @@ public class PlayerScript : MonoBehaviour
     {
         Camera.main.GetComponent<CameraMovement>().enabled = false;
         yield return new WaitForSeconds(1.5f);
+        PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
         _move=false;
         Camera.main.GetComponent<CameraMovement>().enabled = true;
+        
 
 
     }

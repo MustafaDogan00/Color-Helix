@@ -16,12 +16,15 @@ public class WallFragment : MonoBehaviour
       
         if (this.gameObject.tag=="Hit")
         {
-
-            GameObject colorBump = GameObject.FindGameObjectWithTag("ColorBump");
-            if (transform.position.z > colorBump.transform.position.z)
+            if (PlayerPrefs.GetInt("Level") >= 3) ;
             {
-                GameController.Instance.hitColor = ColorBump.Instance.ColorBumpGetColor();
+                GameObject colorBump = GameObject.FindGameObjectWithTag("ColorBump");
+                if (transform.position.z > colorBump.transform.position.z)
+                {
+                    GameController.Instance.hitColor = ColorBump.Instance.ColorBumpGetColor();
+                }
             }
+           
             _meshRenderer.material.color = GameController.Instance.hitColor;
         }else
         {

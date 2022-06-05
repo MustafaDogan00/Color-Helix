@@ -33,7 +33,7 @@ public class Wall : MonoBehaviour
         _wall1.transform.SetParent(transform);
         _wall2.transform.SetParent(transform);
 
-        if (Random.value <=.4f )
+        if (Random.value <=.4f && (PlayerPrefs.GetInt("Level") >= 3))
         {
             _smallWall = true;
         }
