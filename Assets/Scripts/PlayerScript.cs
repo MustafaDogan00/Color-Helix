@@ -17,20 +17,20 @@ public class PlayerScript : MonoBehaviour
     private float _height=.58f, _speed=3f;
     private float  _lerpValue;
 
-    private Vector3 _position;
+    private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
         Instance = this;
         _meshRenderer = GetComponent<MeshRenderer>();
-        _position = transform.position;
-       
 
     }
     private void Start()
     {
         _move = false;
         SetColor(GameController.Instance.hitColor);
+        _spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        _spriteRenderer.enabled = false;
     }
     void Update()
     {
@@ -44,6 +44,7 @@ public class PlayerScript : MonoBehaviour
             transform.position = new Vector3(0, _height, PlayerScript.z);
 
         UptadeColor();
+        _spriteRenderer.color = _currentColor;
     }
 
 
@@ -115,11 +116,21 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator GameOver()
     {
+        _spriteRenderer.transform.position = new Vector3(0, .7f, PlayerScript.z - .05f);
+        _spriteRenderer.transform.eulerAngles = new Vector3(0,0,Random.value*360);
+        _spriteRenderer.enabled = true;
+
+        _meshRenderer.enabled=false;
+        gameObject.GetComponent<SphereCollider>().enabled=false;
+        _move = false;
+
+        yield return new WaitForSeconds(1.5f);
+        PlayerScript.z = 0;
         GameController.Instance.GenerateLevels();
-        _move=false;
-       PlayerScript.z= 0;
-        //transform.position = _position;
-        yield break;
+       
+
+
+
     }
 
 

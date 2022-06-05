@@ -57,6 +57,9 @@ public class GameController : MonoBehaviour
         {
             _wallSpawnNumber = 14;
         }
+        PlayerScript.Instance.enabled = true;
+        PlayerScript.Instance.gameObject.GetComponent<SphereCollider>().enabled = true;
+
         DeleteWalls();
         _isColor = false;
        _z = 5;
