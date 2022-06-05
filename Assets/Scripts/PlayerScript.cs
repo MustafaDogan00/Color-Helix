@@ -35,7 +35,7 @@ public class PlayerScript : MonoBehaviour
         if (Touch.IsPressing())
         { _move = true; }
         if (_move)
-        { PlayerScript.z += _speed * .025f; }
+        {PlayerScript.z+= _speed * .025f; }
 
             transform.position = new Vector3(0, _height, PlayerScript.z);
 
@@ -90,8 +90,8 @@ public class PlayerScript : MonoBehaviour
     {
         GameController.Instance.GenerateLevels();
         _move=false;
-        PlayerScript.z = 0;
-        transform.position = _position;
+       PlayerScript.z= 0;
+        //transform.position = _position;
         yield break;
 
     }

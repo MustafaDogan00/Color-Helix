@@ -15,9 +15,7 @@ public class GameController : MonoBehaviour
     public GameObject colorBump;
     public GameObject walls;
     private GameObject[] _walls2;
-    private GameObject[] _walls1;
-
-
+   
 
     private float _wallSpawnNumber=11;
     private float _z=5;
@@ -35,7 +33,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        // GenerateLevels();
+        GenerateLevels();
     }
 
     void GenerateColors()
@@ -50,21 +48,21 @@ public class GameController : MonoBehaviour
     public void GenerateLevels()
     {
         DeleteWalls();
-        SpawnWalls();
         _isColor = false;
+        SpawnWalls();
+       
     }
     void DeleteWalls()
     {
+        _wallSpawnNumber = 12;
         _walls2 = GameObject.FindGameObjectsWithTag("Fail");
-        _walls1 = GameObject.FindGameObjectsWithTag("Hit");
+     
 
         if (_walls2.Length>=1)
         {
             for (int i = 0; i < _walls2.Length; i++)
             {
                 Destroy(_walls2[i].transform.parent.gameObject);
-                Destroy(_walls1[i].transform.parent.gameObject);
-
             }
 
             Destroy(GameObject.FindGameObjectWithTag("ColorBump"));
@@ -78,7 +76,7 @@ public class GameController : MonoBehaviour
         {
             GameObject wall;
 
-            if (Random.value<=0.2f && !_isColor )
+            if (Random.value<=0.1f && !_isColor )
             {
                 wall = Instantiate(colorBump, transform.position, Quaternion.identity);
                 _isColor = true;
@@ -87,9 +85,7 @@ public class GameController : MonoBehaviour
             {
                 wall = Instantiate(colorBump, transform.position, Quaternion.identity);
                 _isColor = true;
-            }*/
-
-          
+            }*/          
             else 
             {
                 wall = Instantiate(myWall, transform.position, Quaternion.identity);

@@ -11,7 +11,7 @@ public class CameraMovement : MonoBehaviour
     void Update()
     {
 
-        _cSpeed = PlayerScript.CameraSpeed()-2.95f;
+       _cSpeed = PlayerScript.CameraSpeed()-2.95f;
         transform.position = new Vector3(0, 2.2f, _cSpeed);
     }
 }

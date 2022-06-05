@@ -27,6 +27,7 @@ public class Wall : MonoBehaviour
 
         _wall1.name = "Wall1";
         _wall2.name = "Wall2";
+        _wall2.tag = "Fail";
 
         _wall1.transform.SetParent(transform);
         _wall2.transform.SetParent(transform);
