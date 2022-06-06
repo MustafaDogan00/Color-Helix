@@ -10,19 +10,27 @@ public class PlayerScript : MonoBehaviour
 
     private MeshRenderer _meshRenderer;
 
-    private static float z;
+    public static float z=0;
 
-    private bool _move, _colorChange;
-    
+    [HideInInspector]
+    public bool display;
+    private bool _move;
+    private bool  _colorChange;
+    public bool perfectStar;
     private float _height=.58f, _speed=3f;
     private float  _lerpValue;
 
     private SpriteRenderer _spriteRenderer;
 
+    public GameObject pointDisplay;
+
+  
+    
     private void Awake()
     {
         Instance = this;
         _meshRenderer = GetComponent<MeshRenderer>();
+
 
     }
     private void Start()
@@ -31,20 +39,25 @@ public class PlayerScript : MonoBehaviour
         SetColor(GameController.Instance.hitColor);
         _spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         _spriteRenderer.enabled = false;
+        
     }
     void Update()
     {
-
-        
+      
+     
         if (Touch.IsPressing())
-        { _move = true; }
+        { 
+            _move = true;
+            GetComponent<SphereCollider>().enabled = true;      
+        }
+
         if (_move)
         {PlayerScript.z+= _speed * .025f; }
-
             transform.position = new Vector3(0, _height, PlayerScript.z);
 
         UptadeColor();
         _spriteRenderer.color = _currentColor;
+      display = false;
     }
 
 
@@ -53,6 +66,7 @@ public class PlayerScript : MonoBehaviour
         return PlayerScript.z;
     }
 
+    
     void UptadeColor() 
     {
         _meshRenderer.sharedMaterial.color = _currentColor;
@@ -91,23 +105,41 @@ public class PlayerScript : MonoBehaviour
         }
         if (target.gameObject.tag == "Hit")
         {
-            
-           Destroy(target.transform.parent.gameObject);
+            if (perfectStar && !display)
+            {
+                display = true;
+                GameObject pointObject = Instantiate(pointDisplay, transform.position, Quaternion.identity);
+                pointObject.GetComponent<PointDisplay>().PointDisp("Perfect +" + PlayerPrefs.GetInt("Level") * 2);
+            }
+            else if (!perfectStar && !display)
+            {
+                display = true;
+                GameObject pointObject = Instantiate(pointDisplay, transform.position, Quaternion.identity);
+                pointObject.GetComponent<PointDisplay>().PointDisp("+" + PlayerPrefs.GetInt("Level"));
+            }
+
+            Destroy(target.transform.parent.gameObject);
 
         }
         if (target.gameObject.tag == "Fail")
         {
            
-            StartCoroutine(GameOver());
-
+                gameObject.GetComponent<SphereCollider>().enabled = false;
+                StartCoroutine(GameOver());
+                print("CARPTI");
         }
 
 
         if (target.gameObject.tag=="ColorBump")
         {
+              
            _colorChange=true;
             _lerpValue = 0;
-          
+        }
+
+        if (target.gameObject.CompareTag("Star"))
+        {
+            perfectStar = true;
         }
     }
 
@@ -116,18 +148,21 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator GameOver()
     {
+       // _gameOver=true;
         _spriteRenderer.transform.position = new Vector3(0, .7f, PlayerScript.z - .05f);
         _spriteRenderer.transform.eulerAngles = new Vector3(0,0,Random.value*360);
         _spriteRenderer.enabled = true;
-
+         
         _meshRenderer.enabled=false;
-        gameObject.GetComponent<SphereCollider>().enabled=false;
+        GetComponent<SphereCollider>().enabled=false;
         _move = false;
-
         yield return new WaitForSeconds(1.5f);
+        Camera.main.GetComponent<CameraMovement>().FlashScreen();
+        // _gameOver = false;
         PlayerScript.z = 0;
         GameController.Instance.GenerateLevels();
-       
+        _spriteRenderer.enabled = false;
+        _meshRenderer.enabled = false;
 
 
 
@@ -141,7 +176,8 @@ public class PlayerScript : MonoBehaviour
         PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
         _move=false;
         Camera.main.GetComponent<CameraMovement>().enabled = true;
-        
+        Camera.main.GetComponent<CameraMovement>().FlashScreen();
+
 
 
     }
