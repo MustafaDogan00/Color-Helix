@@ -28,11 +28,18 @@ public class Wall : MonoBehaviour
 
         _wall1.name = "Wall1";
         _wall2.name = "Wall2";
+
         _wall1.tag = "Wall1";
         _wall2.tag = "Fail";
 
+   
         _wall1.transform.SetParent(transform);
         _wall2.transform.SetParent(transform);
+
+
+        _wall2.AddComponent<BoxCollider>();    
+        _wall2.GetComponent<BoxCollider>().size = new Vector3(0.9f, 1.85f, 0.2f);
+       _wall2.GetComponent<BoxCollider>().center = new Vector3(0.46f, 0, 0);
 
         if (Random.value <=.4f && (PlayerPrefs.GetInt("Level") >= 3))
         {
@@ -51,7 +58,7 @@ public class Wall : MonoBehaviour
 
         for (int i = 0; i < 100; i++)
         {
-            GameObject wallF = Instantiate(wallFragment, transform.position, Quaternion.Euler(new Vector3(0, 0, _rotatitonZ)));
+            GameObject wallF = Instantiate(wallFragment, Vector3.zero, Quaternion.Euler(new Vector3(0, 0, _rotatitonZ)));
             _rotatitonZ += 3.6f;
 
             if (_rotatitonZ<=_rotatitonZMax)
@@ -62,7 +69,7 @@ public class Wall : MonoBehaviour
             else
             {
                 wallF.transform.SetParent(_wall2.transform);
-                wallF.gameObject.tag = "Fail";
+               // wallF.gameObject.tag = "Fail";
             }
         }
 

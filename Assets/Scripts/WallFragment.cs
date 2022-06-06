@@ -16,7 +16,7 @@ public class WallFragment : MonoBehaviour
       
         if (this.gameObject.tag=="Hit")
         {
-            if (PlayerPrefs.GetInt("Level") >= 3) 
+            if (PlayerPrefs.GetInt("Level") >= 7) 
             {
                 GameObject colorBump = GameObject.FindGameObjectWithTag("ColorBump");
                 if (transform.position.z > colorBump.transform.position.z)

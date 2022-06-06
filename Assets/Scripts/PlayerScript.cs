@@ -16,15 +16,18 @@ public class PlayerScript : MonoBehaviour
     public bool display;
     private bool _move;
     private bool  _colorChange;
+
     public bool perfectStar;
-    private float _height=.58f, _speed=3f;
+    private float _height=.58f, _speed=7f;
     private float  _lerpValue;
+    private bool _gameOver;
 
     private SpriteRenderer _spriteRenderer;
 
     public GameObject pointDisplay;
 
-    //private AudioSource _hitSound, _failSound, _nextLevelSound;
+    private Rigidbody _rb;
+  private AudioSource _hitSound, _failSound, _nextLevelSound;
 
 
 
@@ -32,10 +35,10 @@ public class PlayerScript : MonoBehaviour
     {
         Instance = this;
         _meshRenderer = GetComponent<MeshRenderer>();
-       /* _hitSound = GameObject.Find("HitSound").GetComponent<AudioSource>();
-        _failSound = GameObject.Find("FailSound").GetComponent<AudioSource>();
-        _nextLevelSound = GameObject.Find("NextLevelSound").GetComponent<AudioSource>();*/
-
+        _hitSound = GameObject.FindGameObjectWithTag("HitSound").GetComponent<AudioSource>();
+        _failSound = GameObject.FindGameObjectWithTag("FailSound").GetComponent<AudioSource>();
+        _nextLevelSound = GameObject.FindGameObjectWithTag("NextLevel").GetComponent<AudioSource>();
+       _rb = GetComponent<Rigidbody>();
 
     }
     private void Start()
@@ -50,14 +53,14 @@ public class PlayerScript : MonoBehaviour
     {
       
      
-        if (Touch.IsPressing())
+        if (Touch.IsPressing() && !_gameOver)
         { 
             _move = true;
             GetComponent<SphereCollider>().enabled = true;      
         }
 
         if (_move)
-        {PlayerScript.z+= _speed * .025f; }
+        {PlayerScript.z+= _speed*Time.deltaTime; }
             transform.position = new Vector3(0, _height, PlayerScript.z);
 
         UptadeColor();
@@ -106,8 +109,7 @@ public class PlayerScript : MonoBehaviour
         if (target.gameObject.tag == "FinishLine")
         {
             StartCoroutine(NewLevel());
-            StartCoroutine(GameOver());
-            //_nextLevelSound.Play();
+            _nextLevelSound.Play();
         }
         if (target.gameObject.tag == "Hit")
         {
@@ -123,17 +125,17 @@ public class PlayerScript : MonoBehaviour
                 GameObject pointObject = Instantiate(pointDisplay, transform.position, Quaternion.identity);
                 pointObject.GetComponent<PointDisplay>().PointDisp("+" + PlayerPrefs.GetInt("Level"));
             }
-           // _hitSound.Play();
+            _hitSound.Play();
             Destroy(target.transform.parent.gameObject);
 
         }
         if (target.gameObject.tag == "Fail")
         {
            
-                gameObject.GetComponent<SphereCollider>().enabled = false;
+               
                 StartCoroutine(GameOver());
-            //_failSound.Play();
-                print("CARPTI");
+            _failSound.Play();
+
         }
 
 
@@ -155,37 +157,58 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator GameOver()
     {
-       // _gameOver=true;
-        _spriteRenderer.transform.position = new Vector3(0, .7f, PlayerScript.z - .05f);
-        _spriteRenderer.transform.eulerAngles = new Vector3(0,0,Random.value*360);
+        //// _gameOver=true;
+        // _spriteRenderer.transform.position = new Vector3(0, .7f, PlayerScript.z - .05f);             
+        // _spriteRenderer.transform.eulerAngles = new Vector3(0,0,Random.value*360);
+        // _spriteRenderer.enabled = true;
+
+        // _meshRenderer.enabled=false;
+        // GetComponent<SphereCollider>().enabled=false;
+        // _move = false;
+        // yield return new WaitForSeconds(1.5f);
+        // Camera.main.GetComponent<CameraMovement>().FlashScreen();
+        // // _gameOver = false;
+        // PlayerScript.z = 0;
+        // GameController.Instance.GenerateLevels();
+        // _spriteRenderer.enabled = false;
+        // _meshRenderer.enabled = false;
+
+
+
+       // failSound.Play();
+       _rb.isKinematic = true;
+        _gameOver = true;
+        _spriteRenderer.color = _currentColor;
+        _spriteRenderer.transform.position = new Vector3(0, 0.7f, PlayerScript.z - 0.05f);
+        _spriteRenderer.transform.eulerAngles = new Vector3(0, 0, Random.value * 360);
         _spriteRenderer.enabled = true;
-         
-        _meshRenderer.enabled=false;
-        GetComponent<SphereCollider>().enabled=false;
+
+        _meshRenderer.enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
         _move = false;
+        
         yield return new WaitForSeconds(1.5f);
         Camera.main.GetComponent<CameraMovement>().FlashScreen();
-        // _gameOver = false;
-        PlayerScript.z = 0;
+        _gameOver = false;
+        z = 0;
         GameController.Instance.GenerateLevels();
         _spriteRenderer.enabled = false;
-        _meshRenderer.enabled = false;
-
-
-
+        _meshRenderer.enabled = true;
+        _rb.isKinematic=false;
     }
 
 
     IEnumerator NewLevel()
     {
+      
         Camera.main.GetComponent<CameraMovement>().enabled = false;
         yield return new WaitForSeconds(1.5f);
-        PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
-        _move=false;
-        Camera.main.GetComponent<CameraMovement>().enabled = true;
+        _move = false;
         Camera.main.GetComponent<CameraMovement>().FlashScreen();
-
-
+        PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
+        Camera.main.GetComponent<CameraMovement>().enabled = true;
+        PlayerScript.z = 0;
+        GameController.Instance.GenerateLevels();
 
     }
 

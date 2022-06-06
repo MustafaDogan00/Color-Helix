@@ -22,7 +22,7 @@ public class Score : MonoBehaviour
         {
             _bestScoreText.gameObject.SetActive(true);
             _scoreText.gameObject.SetActive(false);
-            print("AMINA KOYARIM");
+          
         }
         else if (PlayerScript.CameraSpeed() != 0)
         {

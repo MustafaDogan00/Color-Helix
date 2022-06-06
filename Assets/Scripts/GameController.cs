@@ -67,25 +67,27 @@ public class GameController : MonoBehaviour
         {
             GameObject wall;
 
-            if (Random.value <= 0.5f && !_isColor && (PlayerPrefs.GetInt("Level") >= 3))
+            if (Random.value <= 0.5f && !_isColor && (PlayerPrefs.GetInt("Level") >= 7))
             {
-                wall = Instantiate(colorBump, transform.position, Quaternion.identity);
                 _isColor = true;
+                wall = Instantiate(colorBump, transform.position, Quaternion.identity);
+               
             }
-
+           
             else
             {
                 wall = Instantiate(myWall, transform.position, Quaternion.identity);
             }
 
-            wall.transform.SetParent(GameObject.FindWithTag("Helix").transform);
+
+            wall.transform.SetParent(GameObject.Find("Helix").transform);
             wall.transform.localPosition = new Vector3(0, 0, _z);
             _randomRotation = Random.Range(0, 360);
             wall.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, _randomRotation));
             _z += 5;
 
         }
-        finishLine.transform.position = new Vector3(0, 0.03f, _z * 2);
+        finishLine.transform.position = new Vector3(0, 0.03f, _z );
 
     }
 
@@ -94,21 +96,24 @@ public class GameController : MonoBehaviour
     {
 
         GenerateColors();
-        if (PlayerPrefs.GetInt("Level")<=1 && (PlayerPrefs.GetInt("Level")<=3))
+        if (PlayerPrefs.GetInt("Level")>=1 && (PlayerPrefs.GetInt("Level")<=3))
         {
-            _wallSpawnNumber = 12;
+            _wallSpawnNumber = 15;
         }
 
-        if (PlayerPrefs.GetInt("Level") <= 4 && (PlayerPrefs.GetInt("Level") <= 10))
+        else  if (PlayerPrefs.GetInt("Level") >= 4 && PlayerPrefs.GetInt("Level") <= 10)
         {
-            _wallSpawnNumber = 14;
+            _wallSpawnNumber = 20;
         }
-       // PlayerScript.Instance.enabled = true;
-        PlayerScript.Instance.gameObject.GetComponent<SphereCollider>().enabled = true;
+        else
+        {
+            _wallSpawnNumber = 25;
+        }
+
+        _z = 5;
 
         DeleteWalls();
         _isColor = false;
-       _z = 5;
         SpawnWalls();          
     }
     void DeleteWalls()
@@ -144,7 +149,7 @@ public class GameController : MonoBehaviour
                 score += PlayerPrefs.GetInt("Level");
             }
         }
-        print(score);
+      
 
     }
 
