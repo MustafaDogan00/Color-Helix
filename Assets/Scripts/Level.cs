@@ -47,8 +47,8 @@ public class Level : MonoBehaviour
 
         UpdateColors();
 
-        startLevelText.text = PlayerPrefs.GetInt("Level").ToString();
-        endLevelText.text = (PlayerPrefs.GetInt("Level") + 1).ToString();
+        startLevelText.text =(PlayerPrefs.GetInt("Level")+1).ToString();
+        endLevelText.text = (PlayerPrefs.GetInt("Level")+2).ToString();
     }
 
     private void SetProgression(float precentage)
@@ -70,7 +70,7 @@ public class Level : MonoBehaviour
 
 
             levelCompleteMessage.gameObject.SetActive(true);
-            levelCompleteMessage.text = "Level " + PlayerPrefs.GetInt("Level") + " Complete!";
+            levelCompleteMessage.text = "Level " + (PlayerPrefs.GetInt("Level")+1) + " Complete!";
         }
         else
         {

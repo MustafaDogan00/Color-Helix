@@ -23,7 +23,7 @@ public class Helix : MonoBehaviour
         else if (_lastDeltaAngle!=0)
         {
             _lastDeltaAngle -=_lastDeltaAngle*5*Time.deltaTime;
-            _angle -= _angle += _lastDeltaAngle * 360 * 1.7f;
+           _angle += _lastDeltaAngle * 360 * 1.7f;
 
         }
 
