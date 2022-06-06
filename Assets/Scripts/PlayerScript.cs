@@ -24,12 +24,17 @@ public class PlayerScript : MonoBehaviour
 
     public GameObject pointDisplay;
 
-  
-    
+    //private AudioSource _hitSound, _failSound, _nextLevelSound;
+
+
+
     private void Awake()
     {
         Instance = this;
         _meshRenderer = GetComponent<MeshRenderer>();
+       /* _hitSound = GameObject.Find("HitSound").GetComponent<AudioSource>();
+        _failSound = GameObject.Find("FailSound").GetComponent<AudioSource>();
+        _nextLevelSound = GameObject.Find("NextLevelSound").GetComponent<AudioSource>();*/
 
 
     }
@@ -102,6 +107,7 @@ public class PlayerScript : MonoBehaviour
         {
             StartCoroutine(NewLevel());
             StartCoroutine(GameOver());
+            //_nextLevelSound.Play();
         }
         if (target.gameObject.tag == "Hit")
         {
@@ -117,7 +123,7 @@ public class PlayerScript : MonoBehaviour
                 GameObject pointObject = Instantiate(pointDisplay, transform.position, Quaternion.identity);
                 pointObject.GetComponent<PointDisplay>().PointDisp("+" + PlayerPrefs.GetInt("Level"));
             }
-
+           // _hitSound.Play();
             Destroy(target.transform.parent.gameObject);
 
         }
@@ -126,6 +132,7 @@ public class PlayerScript : MonoBehaviour
            
                 gameObject.GetComponent<SphereCollider>().enabled = false;
                 StartCoroutine(GameOver());
+            //_failSound.Play();
                 print("CARPTI");
         }
 

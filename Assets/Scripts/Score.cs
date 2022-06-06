@@ -14,12 +14,6 @@ public class Score : MonoBehaviour
         _bestScoreText=transform.GetChild(0).GetComponent<Text>();
         _scoreText = transform.GetChild(1).GetComponent<Text>();
     }
-    void Start()
-    {
-       
-
-
-    }
 
 
     void Update()

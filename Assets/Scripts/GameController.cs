@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
     public int score;
 
     private bool _isColor;
+
+  
    
     void Awake()
     {
@@ -32,6 +34,7 @@ public class GameController : MonoBehaviour
         GenerateColors();
         SpawnWalls();
        PlayerPrefs.GetInt("level",1);
+      
 
     }
      
@@ -53,6 +56,11 @@ public class GameController : MonoBehaviour
         PlayerScript.SetColor(hitColor);   
     }
 
+    public float GetFinishLineDistance()
+    {
+
+        return finishLine.transform.position.z;
+    }
     void SpawnWalls()
     {
         for (int i = 0; i < _wallSpawnNumber; i++)
@@ -95,7 +103,7 @@ public class GameController : MonoBehaviour
         {
             _wallSpawnNumber = 14;
         }
-        PlayerScript.Instance.enabled = true;
+       // PlayerScript.Instance.enabled = true;
         PlayerScript.Instance.gameObject.GetComponent<SphereCollider>().enabled = true;
 
         DeleteWalls();
